@@ -7,10 +7,23 @@ if [[ $(hostname) = *"corp.adobe"* ]]; then
 	export P4CLIENT=demarco-imac-workspace
 	export P4PORT="ssl:catnip.corp.adobe.com:23000"
 
-else
+#else
 	# For home only
 
 fi
 
 # For both home and work.
+
+# Navigation
+
 alias=..='cd ..'
+alias=...='cd ../..'
+alias=....='cd ../../..'
+alias=.....='cd ../../../..'
+alias=......='cd ../../../../..'
+
+# Git
+
+alias gac='git add -A && git commit -m '
+alias gb='git branch'
+alias gs='git status'
