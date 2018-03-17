@@ -1,5 +1,5 @@
 # Path to oh-my-zsh installation.
-export ZSH=/Users/nickpdemarco/.oh-my-zsh
+export ZSH=/Users/demarco/.oh-my-zsh
 
 ZSH_THEME="muse"
 
