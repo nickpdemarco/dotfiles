@@ -37,6 +37,3 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 
 report "Install my .zshrc"
 curl https://raw.githubusercontent.com/nickpdemarco/dotfiles/master/.zshrc > ~/.zshrc
-
-report "Default to /bin/zsh"
-chsh -s /bin/zsh
