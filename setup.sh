@@ -10,6 +10,24 @@ report() {
 	echo
 }
 
+brew_check_install() {
+	if brew ls --versions $1 > /dev/null; then
+	  report "$1 already installed"
+	else
+	  report "Installing $1"
+	  brew install $1
+	fi
+}
+
+brew_cask_check_install() {
+	if brew cask ls --versions $1 > /dev/null; then
+	  report "$1 already installed"
+	else
+	  report "Installing $1"
+	  brew cask install $1
+	fi
+}
+
 which -s brew
 if [[ $? != 0 ]] ; then
     report "Installing brew"
@@ -19,21 +37,28 @@ else
     brew update
 fi
 
-brew install tree
-brew install the_silver_searcher
+brew_check_install tree
+brew_check_install the_silver_searcher
 
-report "Installing Google Chrome"
-brew cask install google-chrome
-report "Installing Sublime"
-brew cask install sublime-text
-report "Installing iTerm 2"
-brew cask install iterm2
+brew_cask_check_install google-chrome
+brew_cask_check_install sublime-text
+brew_cask_check_install iterm2
+brew_cask_check_install spectacle
+brew_cask_check_install unity
 
-report "Make the dock only show active apps"
-defaults write com.apple.dock static-only -bool TRUE; killall Dock
+if [ "$(defaults read com.apple.dock static-only)" == "1" ]; then
+	report "Dock already configured"
+else
+	report "Make the dock only show active apps"
+	defaults write com.apple.dock static-only -bool TRUE; killall Dock
+fi
 
-report "Install oh-my-zsh"
-sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+if [ "$SHELL" == "/bin/zsh" ]; then
+  report "ZSH already configured"
+else
+	report "Install oh-my-zsh"
+	sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-report "Install my .zshrc"
-curl https://raw.githubusercontent.com/nickpdemarco/dotfiles/master/.zshrc > ~/.zshrc
+	report "Install my .zshrc"
+	curl https://raw.githubusercontent.com/nickpdemarco/dotfiles/master/.zshrc > ~/.zshrc
+fi
