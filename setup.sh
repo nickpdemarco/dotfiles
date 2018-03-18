@@ -46,12 +46,16 @@ brew_cask_check_install iterm2
 brew_cask_check_install spectacle
 brew_cask_check_install unity
 
-if [ "$(defaults read com.apple.dock static-only)" == "1" ]; then
-	report "Dock already configured"
-else
+if [ "$(defaults read com.apple.dock static-only)" != "1" ]; then
 	report "Make the dock only show active apps"
 	defaults write com.apple.dock static-only -bool TRUE; killall Dock
 fi
+
+if [ "$(defaults read NSGlobalDomain AppleKeyboardUIMode)" != "3" ]; then
+	report "Enable tabbing between UI elements"
+	defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+fi
+
 
 if [ "$SHELL" == "/bin/zsh" ]; then
   report "ZSH already configured"
