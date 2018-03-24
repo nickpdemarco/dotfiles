@@ -117,7 +117,7 @@ class BrewCaskFormula(ConditionalShell):
 targets = [
 	BrewFormula("tree"),
 	BrewFormula("the_silver_searcher"),
-	BrewFormula("unrar"),
+	# BrewFormula("unrar"),
 
 	BrewCaskFormula("google-chrome"),
 	BrewCaskFormula("sublime-text"),
@@ -135,6 +135,11 @@ def main():
 
 	args = get_args()
 	brew_only = bool(args.brew)
+	clean_it = bool(args.clean)
+
+	if clean_it:
+		clean()
+		return
 
 	for t in targets:
 		if brew_only and not any([isinstance(t, clazz) for clazz in [BrewFormula, BrewCaskFormula]]):
@@ -151,9 +156,25 @@ def main():
 				error_report(t)
 
 
+def clean():
+	# TODO brew cask cleanup.
+	desired = [str(t) for t in targets if isinstance(t, BrewFormula)];
+	installed = shell("brew leaves").split()
+	to_remove = [target for target in installed if target not in desired]
+
+	if not to_remove:
+		positive_report("Brew up to date")
+		return
+
+	for t in to_remove:
+		if ask_for_affirmative("{} is installed but not specified. Uninstall?".format(t)):
+			shell("brew uninstall {}".format(i))
+
+
 def get_args():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--brew', action='store_true')
+	parser.add_argument('--clean', action='store_true')
 	return parser.parse_args()
 
 if __name__ == "__main__":
