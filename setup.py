@@ -6,7 +6,6 @@ import argparse
 
 # UTILITY -~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
 
-# - -  - -  - -  - -
 def report(message):
 	cols = int(shell('stty size').split()[1])
 	numDashes = cols - len(message)
